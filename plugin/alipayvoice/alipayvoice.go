@@ -24,9 +24,9 @@ func init() { // 插件主体
 	})
 
 	// 开启
-	engine.OnPrefix(`支付宝到账`).SetBlock(true).
+	engine.OnRegex(`^支付宝到账([0-9]+)`).SetBlock(true).
 		Handle(func(ctx *zero.Ctx) {
-			args := ctx.State["args"].(string)
+			args := ctx.State["regex_matched"].([]string)[1]
 			ctx.SendChain(message.Record(fmt.Sprintf(alipayvoiceURL, strings.TrimSpace(args))))
 		})
 }
